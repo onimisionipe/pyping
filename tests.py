@@ -18,7 +18,7 @@
 import socket
 import unittest
 
-from ping import Ping, is_valid_ip4_address, to_ip
+from pyping.pyping import Ping, is_valid_ip4_address, to_ip
 
 
 class PingTest(Ping):
