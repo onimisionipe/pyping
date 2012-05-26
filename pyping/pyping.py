@@ -200,11 +200,10 @@ class Ping(object):
 
 		if self.receive_count > 0:
 			msg = "round-trip (ms)  min/avg/max = %0.3f/%0.3f/%0.3f" % (self.min_time, self.total_time / self.receive_count, self.max_time)
-			self.result['min_rtt'] = '%.3f' % self.min_time
-			self.result['avg_rtt'] = '%.3f' % (self.total_time / self.receive_count)
-			self.result['max_rtt'] = '%.3f' % self.max_time
-
 			if self.quiet_output:
+				self.result['min_rtt'] = '%.3f' % self.min_time
+				self.result['avg_rtt'] = '%.3f' % (self.total_time / self.receive_count)
+				self.result['max_rtt'] = '%.3f' % self.max_time
 				self.result['output'].append(msg)
 			else:
 				print(msg)
@@ -270,14 +269,18 @@ class Ping(object):
 				time.sleep((MAX_SLEEP - delay) / 1000.0)
 
 		self.print_exit()
-		return dict(self.result)
+		if self.quiet_output:
+			return dict(self.result)
 
 	def do(self):
 		"""
 		Send one ICMP ECHO_REQUEST and receive the response until self.timeout
 		"""
 		try: # One could use UDP here, but it's obscure
-			current_socket = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.getprotobyname("icmp"))
+			if os.name == 'nt':
+				current_socket = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.getprotobyname("icmp"))
+			else:
+				current_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.getprotobyname("icmp"))
 		except socket.error, (errno, msg):
 			if errno == 1:
 				# Operation not permitted - Add more information to traceback

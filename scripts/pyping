@@ -15,7 +15,8 @@
     :license: GNU GPL v2, see LICENSE for more details.
 """
 
-import pyping
+from pyping import pyping
+import sys
 
 if __name__ == '__main__':
     # FIXME: Add a real CLI
@@ -23,21 +24,21 @@ if __name__ == '__main__':
         print "DEMO"
 
         # These should work:
-        pyping.verbose_ping("heise.de")
-        pyping.verbose_ping("google.com")
+        pyping.cli_ping("heise.de")
+        pyping.cli_ping("google.com")
 
         # Inconsistent on Windows w/ ActivePython (Python 3.2 resolves correctly
         # to the local host, but 2.7 tries to resolve to the local *gateway*)
-        pyping.verbose_ping("localhost")
+        pyping.cli_ping("localhost")
 
         # Should fail with 'getaddrinfo print_failed':
-        pyping.verbose_ping("foobar_url.foobar")
+        pyping.cli_ping("foobar_url.foobar")
 
         # Should fail (timeout), but it depends on the local network:
-        pyping.verbose_ping("192.168.255.254")
+        pyping.cli_ping("192.168.255.254")
 
         # Should fails with 'The requested address is not valid in its context':
-        pyping.verbose_ping("0.0.0.0")
+        pyping.cli_ping("0.0.0.0")
     elif len(sys.argv) == 2:
         pyping.cli_ping(sys.argv[1])
     else:
