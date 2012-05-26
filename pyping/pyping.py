@@ -102,7 +102,7 @@ def to_ip(addr):
 
 
 class Ping(object):
-	def __init__(self, destination, timeout=1000, packet_size=55, own_id=None, quiet_output=True):
+	def __init__(self, destination, timeout=1000, packet_size=55, own_id=None, quiet_output=True, udp=False):
 		self.quiet_output = quiet_output
 		if quiet_output:
 			self.result = {}
@@ -115,6 +115,7 @@ class Ping(object):
 		self.destination = destination
 		self.timeout = timeout
 		self.packet_size = packet_size
+		self.upd = udp
 		if own_id is None:
 			self.own_id = os.getpid() & 0xFFFF
 		else:
@@ -277,10 +278,10 @@ class Ping(object):
 		Send one ICMP ECHO_REQUEST and receive the response until self.timeout
 		"""
 		try: # One could use UDP here, but it's obscure
-			if os.name == 'nt':
-				current_socket = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.getprotobyname("icmp"))
-			else:
+			if self.udp:
 				current_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.getprotobyname("icmp"))
+			else:
+				current_socket = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.getprotobyname("icmp"))
 		except socket.error, (errno, msg):
 			if errno == 1:
 				# Operation not permitted - Add more information to traceback
@@ -397,7 +398,6 @@ class Ping(object):
 			timeout = timeout - select_duration
 			if timeout <= 0:
 				return None, 0, 0, 0, 0
-
 
 def cli_ping(hostname, timeout=1000, count=3, packet_size=55):
 	p = Ping(hostname, timeout, packet_size, quiet_output=False)

@@ -27,9 +27,9 @@ with open('README.md') as file:
 
 setup(
 	name='pyping',
-	version='0.0.1',
+	version='0.0.2',
 	description='A pure python ICMP ping implementation using raw sockets.',
-#	long_description=long_description,
+	long_description=long_description,
 	author=get_authors(),
 	author_email="geoffrey@lehee.name",
 	url='https://github.com/socketubs/pyping/',

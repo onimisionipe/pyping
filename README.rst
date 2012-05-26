@@ -6,51 +6,50 @@ A pure python ping implementation using raw sockets.
 Note that ICMP messages can only be sent from processes running as root
 (in Windows, you must run this script as 'Administrator').
 
-Original Version from [[ftp://ftp.visi.com/users/mdc/ping.py|Matthew Dixon Cowles]]
+Original Version from Matthew Dixon Cowles:ftp://ftp.visi.com/users/mdc/ping.py.
   
-* copyleft 1989-2011 by the python-ping team, see [[https://github.com/jedie/python-ping/blob/master/AUTHORS|AUTHORS]] for more details.
-* license: GNU GPL v2, see [[https://github.com/jedie/python-ping/blob/master/LICENSE|LICENSE]] for more details.
+* copyleft 1989-2011 by the python-ping team, see AHTHORS:https://github.com/socketubs/pyping/blob/master/AUTHORS for more details.
+* license: GNU GPL v2, see LICENCE:https://github.com/socketubs/pyping/blob/master/LICENSE for more details.
 
 
 Usage
 -----
 
-<pre>
-~/python-ping$ sudo ./ping.py google.com
+::
+    ~/python-ping$ sudo ./ping.py google.com
 
-PYTHON-PING google.com (209.85.148.99): 55 data bytes
-64 bytes from google.com (209.85.148.99): icmp_seq=0 ttl=54 time=56.2 ms
-64 bytes from google.com (209.85.148.99): icmp_seq=1 ttl=54 time=55.7 ms
-64 bytes from google.com (209.85.148.99): icmp_seq=2 ttl=54 time=55.5 ms
+    PYTHON-PING google.com (209.85.148.99): 55 data bytes
+    64 bytes from google.com (209.85.148.99): icmp_seq=0 ttl=54 time=56.2 ms
+    64 bytes from google.com (209.85.148.99): icmp_seq=1 ttl=54 time=55.7 ms
+    64 bytes from google.com (209.85.148.99): icmp_seq=2 ttl=54 time=55.5 ms
 
-----google.com PYTHON PING Statistics----
-3 packets transmitted, 3 packets received, 0.0% packet loss
-round-trip (ms)  min/avg/max = 55.468/55.795/56.232
-</pre>
+    ----google.com PYTHON PING Statistics----
+    3 packets transmitted, 3 packets received, 0.0% packet loss
+    round-trip (ms)  min/avg/max = 55.468/55.795/56.232
 
 TODOs
 -----
 
-* refactor ping.py
-* create a CLI interface
-* add a "suprocess ping", with output parser
+- refactor ping.py
+- create a CLI interface
+- add a "suprocess ping", with output parser
 
 
 Contribute
 ----------
 
-[[http://help.github.com/fork-a-repo/|Fork this repo]] on [[https://github.com/jedie/python-ping/|GitHub]] and [[http://help.github.com/send-pull-requests/|send pull requests]]. Thank you.
+Fork:http://help.github.com/fork-a-repo/ this repo on GitHub:https://github.com/socketubs/pyping and send:http://help.github.com/send-pull-requests pull requests. Thank you.
 
 
 Revision history
 ----------------
 
 **Oct. 17, 2011**
-* [[https://github.com/jedie/python-ping/pull/6|Bugfix if host is unknown]]
+- Bugfis:https://github.com/jedie/python-ping/pull/6 if host is unknown]]
 
 **Oct. 12, 2011**
 Merge sources and create a seperate github repository:
-* https://github.com/jedie/python-ping
+- https://github.com/jedie/python-ping
 
 Add a simple CLI interface.
 
@@ -59,7 +58,7 @@ Bugfixes + cleanup by Jens Diemer
 Tested with Ubuntu + Windows 7
 
 **September 6, 2011**
-[[http://www.falatic.com/index.php/39/pinging-with-python|Cleanup by Martin Falatic.]]
+Cleanup:http://www.falatic.com/index.php/39/pinging-with-python by Martin Falatic.]]
 Restored lost comments and docs. Improved functionality: constant time between
 pings, internal times consistently use milliseconds. Clarified annotations
 (e.g., in the checksum routine). Using unsigned data in IP & ICMP header
@@ -78,8 +77,8 @@ replaced time.clock with default_timer which is set to
 time.clock on windows and time.time on other systems.
 
 **November 8, 2009**
-Fixes by [[http://www.g-loaded.eu/2009/10/30/python-ping/|George Notaras]],
-reported by [[http://cdhallman.blogspot.com|Chris Hallman]]: 
+Fixes by George Notaras:http://www.g-loaded.eu/2009/10/30/python-ping/,
+reported by Chris Hallman:http://cdhallman.blogspot.com: 
 
 Improved compatibility with GNU/Linux systems.
 
@@ -87,14 +86,14 @@ Changes in this release:
 
 Re-use time.time() instead of time.clock(). The 2007 implementation
 worked only under Microsoft Windows. Failed on GNU/Linux.
-time.clock() behaves differently under [[http://docs.python.org/library/time.html#time.clock|the two OSes]].
+time.clock() behaves differently under the two OSes:http://docs.python.org/library/time.html#time.clock.
 
 **May 30, 2007**
-little [[http://www.python-forum.de/post-69122.html#69122|rewrite by Jens Diemer]]:
- * change socket asterisk import to a normal import
- * replace time.time() with time.clock()
- * delete "return None" (or change to "return" only)
- * in checksum() rename "str" to "source_string"
+little rewrite by Jens Diemer:http://www.python-forum.de/post-69122.html#69122:
+- change socket asterisk import to a normal import
+- replace time.time() with time.clock()
+- delete "return None" (or change to "return" only)
+- in checksum() rename "str" to "source_string"
 
 **December 4, 2000**
 Changed the struct.pack() calls to pack the checksum and ID as
@@ -116,4 +115,4 @@ Links
 
 | Sourcecode at GitHub | https://github.com/socketubs/python-ping |
 | Python Package Index | http://pypi.python.org/pypi/python-ping/ |
-| IRC                  | [[http://www.pylucid.org/permalink/304/irc-channel|#pylucid on freenode.net]]
+| IRC                  | #pylucid on freenode.net:http://www.pylucid.org/permalink/304/irc-channel |
