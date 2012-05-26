@@ -22,7 +22,7 @@ def get_authors():
 		authors = "[Error: %s]" % err
 	return authors
 
-with open('README.rst') as file:
+with open(os.path.join(PACKAGE_ROOT, 'README.rst')) as file:
 	long_description = file.read()
 
 setup(
