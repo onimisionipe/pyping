@@ -115,7 +115,8 @@ class Ping(object):
 		self.destination = destination
 		self.timeout = timeout
 		self.packet_size = packet_size
-		self.upd = udp
+		self.udp = udp
+
 		if own_id is None:
 			self.own_id = os.getpid() & 0xFFFF
 		else:
@@ -403,6 +404,6 @@ def cli_ping(hostname, timeout=1000, count=3, packet_size=55):
 	p = Ping(hostname, timeout, packet_size, quiet_output=False)
 	p.run(count)
 
-def send(hostname, timeout=1000, count=3, packet_size=55):
-	p = Ping(hostname, timeout, packet_size)
+def send(hostname, timeout=1000, count=3, packet_size=55, *args, **kwargs):
+	p = Ping(hostname, timeout, packet_size, *args, **kwargs)
 	return p.run(count)
