@@ -13,7 +13,7 @@ Original Version from `Matthew Dixon Cowles <ftp://ftp.visi.com/users/mdc/ping.p
 
 Usage
 -----
-::
+Use as a cli tool::
 
     ~/python-ping$ sudo ./ping.py google.com
 
@@ -26,9 +26,25 @@ Usage
     3 packets transmitted, 3 packets received, 0.0% packet loss
     round-trip (ms)  min/avg/max = 55.468/55.795/56.232
 
+Use as a python lib::
+
+    >>> from pyping import pyping
+    >>> r = pyping.send('127.0.0.1')                # Need to be root or
+    >>> r = pyping.send('127.0.0.1', udp = True)    # But it's udp, not real icmp
+    >>> for key, value in sorted(r.items()):
+    ...     print("%s: %s" % (key, value))
+    ... 
+    avg_rtt: 0.180
+    max_rtt: 0.215
+    min_rtt: 0.121
+    output: ['\nPYTHON-PING 127.0.0.1 (127.0.0.1): 55 data bytes', '241 bytes from 127.0.0.1: icmp_seq=0 ttl=64 time=0.1 ms', '241 bytes from 127.0.0.1: icmp_seq=1 ttl=64 time=0.2 ms', '241 bytes from 127.0.0.1: icmp_seq=2 ttl=64 time=0.2 ms', '\n----127.0.0.1 PYTHON PING Statistics----', '3 packets transmitted, 3 packets received, 0.0% packet loss', 'round-trip (ms)  min/avg/max = 0.121/0.180/0.215', '']
+    packet_lost: 0
+    ret_code: 0
+
 TODO
 ----
 
+- Docs
 - Refactor ping.py
 - Create a CLI interface
 - Add a "suprocess ping", with output parser
