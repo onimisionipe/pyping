@@ -10,36 +10,16 @@
     Bugs are naturally mine. I'd be glad to hear about them. There are
     certainly word - size dependencies here.
 
-    :homepage: https://github.com/jedie/python-ping/
+    :homepage: https://github.com/socektubs/Pyping/
     :copyleft: 1989-2011 by the python-ping team, see AUTHORS for more details.
     :license: GNU GPL v2, see LICENSE for more details.
 """
 
-from pyping import pyping
+import pyping
 import sys
 
 if __name__ == '__main__':
-    # FIXME: Add a real CLI
-    if len(sys.argv) == 1:
-        print "DEMO"
-
-        # These should work:
-        pyping.cli_ping("heise.de")
-        pyping.cli_ping("google.com")
-
-        # Inconsistent on Windows w/ ActivePython (Python 3.2 resolves correctly
-        # to the local host, but 2.7 tries to resolve to the local *gateway*)
-        pyping.cli_ping("localhost")
-
-        # Should fail with 'getaddrinfo print_failed':
-        pyping.cli_ping("foobar_url.foobar")
-
-        # Should fail (timeout), but it depends on the local network:
-        pyping.cli_ping("192.168.255.254")
-
-        # Should fails with 'The requested address is not valid in its context':
-        pyping.cli_ping("0.0.0.0")
-    elif len(sys.argv) == 2:
-        pyping.cli_ping(sys.argv[1])
+    if len(sys.argv) == 2:
+        pyping.ping(sys.argv[1], timeout=1000, packet_size=55, count=3, quiet_output=False)
     else:
         print "Error: call pyping domain.tld"

@@ -99,18 +99,29 @@ def to_ip(addr):
 		return addr
 	return socket.gethostbyname(addr)
 
+class Response(object):
+	def __init__(self):
+		self.max_rtt = None
+		self.min_rtt = None
+		self.avg_rtt = None
+		self.packet_lost = None
+		self.ret_code = None
+		self.output = []
+
+		self.packet_size = None
+		self.timeout = None
+		self.destination = None
+		self.destination_ip = None
 
 class Ping(object):
 	def __init__(self, destination, timeout=1000, packet_size=55, own_id=None, quiet_output=True, udp=False):
 		self.quiet_output = quiet_output
 		if quiet_output:
-			self.result = {}
-			self.result['max_rtt'] = None
-			self.result['min_rtt'] = None
-			self.result['avg_rtt'] = None
-			self.result['packet_lost'] = 0
-			self.result['ret_code'] = 0
-			self.result['output'] = []
+			self.response = Response()
+			self.response.destination = destination
+			self.response.timeout = timeout
+			self.response.packet_size = packet_size
+
 		self.destination = destination
 		self.timeout = timeout
 		self.packet_size = packet_size
@@ -124,6 +135,8 @@ class Ping(object):
 		try:
 			# FIXME: Use destination only for display this line here? see: https://github.com/jedie/python-ping/issues/3
 			self.dest_ip = to_ip(self.destination)
+			if quiet_output:
+				self.response.destination_ip = self.dest_ip
 		except socket.gaierror as e:
 			self.print_unknown_host(e)
 		else:
@@ -141,15 +154,15 @@ class Ping(object):
 	def print_start(self):
 		msg = "\nPYTHON-PING %s (%s): %d data bytes" % (self.destination, self.dest_ip, self.packet_size)
 		if self.quiet_output:
-			self.result['output'].append(msg)
+			self.response.output.append(msg)
 		else:
 			print(msg)
 
 	def print_unknown_host(self, e):
 		msg = "\nPYTHON-PING: Unknown host: %s (%s)\n" % (self.destination, e.args[1])
 		if self.quiet_output:
-			self.result['output'].append(msg)
-			self.result['ret_code'] = 1
+			self.response.output.append(msg)
+			self.response.ret_code = 1
 		else:
 			print(msg)
 
@@ -164,7 +177,8 @@ class Ping(object):
 	   	msg = "%d bytes from %s: icmp_seq=%d ttl=%d time=%.1f ms" % (packet_size, from_info, icmp_header["seq_number"], ip_header["ttl"], delay)
 
 		if self.quiet_output:
-			self.result['output'].append(msg)
+			self.response.output.append(msg)
+			self.response.ret_code = 0
 		else:
 			print(msg)
 		#print("IP header: %r" % ip_header)
@@ -174,8 +188,8 @@ class Ping(object):
 		msg = "Request timed out."
 
 		if self.quiet_output:
-			self.result['output'].append(msg)
-			self.result['ret_code'] = 1
+			self.response.output.append(msg)
+			self.response.ret_code = 1
 		else:
 			print(msg)
 
@@ -183,7 +197,7 @@ class Ping(object):
 		msg = "\n----%s PYTHON PING Statistics----" % (self.destination)
 
 		if self.quiet_output:
-			self.result['output'].append(msg)
+			self.response.output.append(msg)
 		else:
 			print(msg)
 
@@ -194,25 +208,25 @@ class Ping(object):
 		msg = "%d packets transmitted, %d packets received, %0.1f%% packet loss" % (self.send_count, self.receive_count, lost_rate)
 	
 		if self.quiet_output:
-			self.result['output'].append(msg)
-			self.result['packet_lost'] = lost_count
+			self.response.output.append(msg)
+			self.response.packet_lost = lost_count
 		else:
 			print(msg)
 
 		if self.receive_count > 0:
 			msg = "round-trip (ms)  min/avg/max = %0.3f/%0.3f/%0.3f" % (self.min_time, self.total_time / self.receive_count, self.max_time)
 			if self.quiet_output:
-				self.result['min_rtt'] = '%.3f' % self.min_time
-				self.result['avg_rtt'] = '%.3f' % (self.total_time / self.receive_count)
-				self.result['max_rtt'] = '%.3f' % self.max_time
-				self.result['output'].append(msg)
+				self.response.min_rtt = '%.3f' % self.min_time
+				self.response.avg_rtt = '%.3f' % (self.total_time / self.receive_count)
+				self.response.max_rtt = '%.3f' % self.max_time
+				self.response.output.append(msg)
 			else:
 				print(msg)
 
 		if self.quiet_output:
-			self.result['output'].append("")
+			self.response.output.append('\n')
 		else:
-			print("")
+			print('')
 
 	#--------------------------------------------------------------------------
 
@@ -224,8 +238,8 @@ class Ping(object):
 		msg = "\n(Terminated with signal %d)\n" % (signum)
 
 		if self.quiet_output:
-			self.result['output'].append(msg)
-			self.result['ret_code'] = 0
+			self.response.output.append(msg)
+			self.response.ret_code = 0
 		else:
 			print(msg)
 
@@ -271,7 +285,7 @@ class Ping(object):
 
 		self.print_exit()
 		if self.quiet_output:
-			return dict(self.result)
+			return self.response
 
 	def do(self):
 		"""
@@ -348,7 +362,7 @@ class Ping(object):
 		try:
 			current_socket.sendto(packet, (self.destination, 1)) # Port number is irrelevant for ICMP
 		except socket.error as e:
-			self.result['output'].append("General failure (%s)" % (e.args[1]))
+			self.response.output.append("General failure (%s)" % (e.args[1]))
 			current_socket.close()
 			return
 
@@ -399,10 +413,6 @@ class Ping(object):
 			if timeout <= 0:
 				return None, 0, 0, 0, 0
 
-def cli_ping(hostname, timeout=1000, count=3, packet_size=55):
-	p = Ping(hostname, timeout, packet_size, quiet_output=False)
-	p.run(count)
-
-def send(hostname, timeout=1000, count=3, packet_size=55, *args, **kwargs):
+def ping(hostname, timeout=1000, count=3, packet_size=55, *args, **kwargs):
 	p = Ping(hostname, timeout, packet_size, *args, **kwargs)
 	return p.run(count)
