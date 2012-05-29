@@ -4,33 +4,16 @@
 import os
 from setuptools import setup
 
-PACKAGE_ROOT = os.path.dirname(os.path.abspath(__file__))
-
-def get_authors():
-	authors = []
-	try:
-		f = file(os.path.join(PACKAGE_ROOT, "AUTHORS"), "r")
-		for line in f:
-			if not line.strip().startswith("*"):
-				continue
-			if "--" in line:
-				line = line.split("--", 1)[0]
-			authors.append(line.strip(" *\r\n"))
-		f.close()
-		authors.sort()
-	except Exception, err:
-		authors = "[Error: %s]" % err
-	return authors
-
-with open(os.path.join(PACKAGE_ROOT, 'README.rst')) as file:
-	long_description = file.read()
+if sys.argv[-1] == 'publish':
+    os.system('python setup.py sdist upload')
+    sys.exit()
 
 setup(
 	name='pyping',
-	version='0.0.2',
-	description='A pure python ICMP ping implementation using raw sockets.',
-	long_description=long_description,
-	author=get_authors(),
+	version='0.0.3',
+	description='A pure python ICMP ping implementation using raw sockets',
+	long_description=open('README.rst').read(),
+	author="Geoffrey Lehée",
 	author_email="geoffrey@lehee.name",
 	url='https://github.com/socketubs/pyping/',
 	keywords="ping icmp network latency",
