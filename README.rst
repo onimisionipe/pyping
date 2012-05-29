@@ -28,7 +28,7 @@ Use as a cli tool::
 
 Use as a python lib::
 
-    >>> from pyping import pyping
+    >>> import pyping
     >>> r = pyping.send('127.0.0.1')                # Need to be root or
     >>> r = pyping.send('127.0.0.1', udp = True)    # But it's udp, not real icmp
     >>> for key, value in sorted(r.items()):
@@ -45,9 +45,8 @@ TODO
 ----
 
 - Docs
-- Refactor ping.py
+- Refactor core.py
 - Create a CLI interface
-- Add a "suprocess ping", with output parser
 
 Contribute
 ----------
