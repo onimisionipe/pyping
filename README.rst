@@ -1,3 +1,4 @@
+======
 Pyping
 ======
 
@@ -15,33 +16,36 @@ Usage
 -----
 Use as a cli tool::
 
-    ~/python-ping$ sudo ./ping.py google.com
+    socketubs@socket-laptop [Pyping]: sudo pyping socketubs.net
 
-    PYTHON-PING google.com (209.85.148.99): 55 data bytes
-    64 bytes from google.com (209.85.148.99): icmp_seq=0 ttl=54 time=56.2 ms
-    64 bytes from google.com (209.85.148.99): icmp_seq=1 ttl=54 time=55.7 ms
-    64 bytes from google.com (209.85.148.99): icmp_seq=2 ttl=54 time=55.5 ms
+    PYTHON-PING socketubs.net (92.243.5.143): 55 data bytes
+    241 bytes from socketubs.net (92.243.5.143): icmp_seq=0 ttl=55 time=64.5 ms
+    241 bytes from socketubs.net (92.243.5.143): icmp_seq=1 ttl=55 time=67.7 ms
+    241 bytes from socketubs.net (92.243.5.143): icmp_seq=2 ttl=55 time=66.6 ms
 
-    ----google.com PYTHON PING Statistics----
+    ----socketubs.net PYTHON PING Statistics----
     3 packets transmitted, 3 packets received, 0.0% packet loss
-    round-trip (ms)  min/avg/max = 55.468/55.795/56.232
+    round-trip (ms)  min/avg/max = 64.457/66.244/67.677
 
-Use as a python lib::
+Use as a Python lib::
 
     >>> import pyping
-    >>> r = pyping.send('127.0.0.1')                # Need to be root or
-    >>> r = pyping.send('127.0.0.1', udp = True)    # But it's udp, not real icmp
-    >>> for key, value in sorted(r.items()):
-    ...     print("%s: %s" % (key, value))
-    ... 
-    avg_rtt: 0.180
-    max_rtt: 0.215
-    min_rtt: 0.121
-    output: ['\nPYTHON-PING 127.0.0.1 (127.0.0.1): 55 data bytes', '241 bytes from 127.0.0.1: icmp_seq=0 ttl=64 time=0.1 ms', '241 bytes from 127.0.0.1: icmp_seq=1 ttl=64 time=0.2 ms', '241 bytes from 127.0.0.1: icmp_seq=2 ttl=64 time=0.2 ms', '\n----127.0.0.1 PYTHON PING Statistics----', '3 packets transmitted, 3 packets received, 0.0% packet loss', 'round-trip (ms)  min/avg/max = 0.121/0.180/0.215', '']
-    packet_lost: 0
-    ret_code: 0
+    >>> r = pyping.ping('socketubs.net')                # Need to be root or
+    >>> r = pyping.ping('socketubs.net', udp = True)    # But it's udp, not real icmp
+    >>> r.ret_code
+    0
+    >>> r.destination
+    'socketubs.net'
+    >>> r.max_rtt
+    '69.374'
+    >>> r.avg_rtt
+    '68.572'
+    >>> r.min_rtt
+    '67.681'
+    >>> r.destination_ip
+    '92.243.5.143'
 
-TODO
+Todo
 ----
 
 - Docs
@@ -52,32 +56,6 @@ Contribute
 ----------
 
 `Fork <http://help.github.com/fork-a-repo/>`_ this repo on `GitHub <https://github.com/socketubs/pyping>`_ and `send <http://help.github.com/send-pull-requests>`_ pull requests. Thank you.
-
-Revision history
-----------------
-
- * **2011-10-17**: `Bugfix <https://github.com/jedie/python-ping/pull/6>`_ if host is unknown
- * **2011-10-12**: Merge sources and create a seperate github `repository <https://github.com/jedie/python-ping>`_ and add a simple CLI interface.
- * **2011-09-12**: Bugfixes + cleanup by Jens Diemer. Tested with Ubuntu + Windows 7.
- * **2011-09-06**: `Cleanup <http://www.falatic.com/index.php/39/pinging-with-python>`_ by Martin Falatic :
-  - Restored lost comments and docs. Improved functionality: constant time between pings, internal times consistently use milliseconds. Clarified annotations (e.g., in the checksum routine)
-  - Using unsigned data in IP & ICMP header pack/unpack unless otherwise necessary.
-  - Signal handling
-  - Ping-style output formatting and stats
- * **2011-08-03**: Ported to py3k by Zach Ware. Mostly done by 2to3; also minor changes to deal with bytes vs. string changes (no more ord() in checksum() because >source_string< is actually bytes, added .encode() to data in send_one_ping()). That's about it.
- * **2010-03-11**: Changes by Samuel Stauffer:
-  - Replaced time.clock with default_timer which is set to time.clock on windows and time.time on other systems.
- * **2009-11-08**: Fixes by `George Notaras <http://www.g-loaded.eu/2009/10/30/python-ping/>`_, reported by `Chris Hallman <http://cdhallman.blogspot.com>`_: 
-  - Improved compatibility with GNU/Linux systems.
-  - Re-use time.time() instead of time.clock(). The 2007 implementation worked only under Microsoft Windows. Failed on GNU/Linux. time.clock() behaves differently under the two `OSes <http://docs.python.org/library/time.html#time.clock>`_.
- * **2007-06-30**: Little rewrite by `Jens Diemer <http://www.python-forum.de/post-69122.html#69122>`_:
-  - Change socket asterisk import to a normal import
-  - Replace time.time() with time.clock()
-  - Delete "return None" (or change to "return" only)
-  - In checksum() rename "str" to "source_string"
- * **2000-12-04**: Changed the struct.pack() calls to pack the checksum and ID as unsigned. My thanks to Jerome Poincheval for the fix.
- * **1997-12-16**: For some reason, the checksum bytes are in the wrong order when this is run under Solaris 2.X for SPARC but it works right under Linux x86. Since I don't know just what's wrong, I'll swap the bytes always and then do an htons().
- * **1997-11-22**: Initial hack. Doesn't do much, but rather than try to guess what features I (or others) will want in the future, I've only put in what I need now.
 
 Links
 -----
