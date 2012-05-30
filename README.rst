@@ -7,10 +7,10 @@ A pure python ping implementation using raw sockets.
 Note that ICMP messages can only be sent from processes running as root
 (in Windows, you must run this script as 'Administrator').
 
-Original Version from `Matthew Dixon Cowles <ftp://ftp.visi.com/users/mdc/ping.py>`_.
+Original Version from Matthew Dixon Cowles.
   
-* Copyleft 1989-2011 by the python-ping team, see `AUTHORS <https://github.com/socketubs/pyping/blob/master/AUTHORS>`_ for more details.
-* License: GNU GPL v2, see `LICENCE <https://github.com/socketubs/pyping/blob/master/LICENSE>`_ for more details.
+* Copyleft 1989-2011 by the python-ping team, see `AUTHORS <https://raw.github.com/socketubs/pyping/master/AUTHORS>`_ for more details.
+* License: GNU GPL v2, see `LICENCE <https://raw.github.com/Socketubs/Pyping/master/LICENSE>`_ for more details.
 
 Usage
 -----
@@ -51,14 +51,15 @@ Todo
 - Docs
 - Refactor core.py
 - Create a CLI interface
+- Tests
 
 Contribute
 ----------
 
-`Fork <http://help.github.com/fork-a-repo/>`_ this repo on `GitHub <https://github.com/socketubs/pyping>`_ and `send <http://help.github.com/send-pull-requests>`_ pull requests. Thank you.
+`Fork <http://help.github.com/fork-a-repo/>`_ this repo on `GitHub <https://github.com/socketubs/Pyping>`_ and `send <http://help.github.com/send-pull-requests>`_ pull requests. Thank you.
 
 Links
 -----
 
- - Sourcecode at GitHub: https://github.com/socketubs/pyping
+ - Sourcecode at GitHub: https://github.com/socketubs/Pyping
  - Python Package Index: http://pypi.python.org/pypi/pyping/
