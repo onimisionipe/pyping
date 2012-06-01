@@ -2,29 +2,36 @@
 # coding: utf-8
 import pyping
 import sys
-import argparse
-from clint.textui import colored, indent, puts
+import getopt
+from clint.textui import indent, puts
 
-"""
-	A pure python ping implementation using raw sockets.
-
-	Note that ICMP messages can only be send from processes running as root
-	(in Windows, you must run this script as 'Administrator').
-
-	Bugs are naturally mine. I'd be glad to hear about them. There are
-	certainly word - size dependencies here.
-
-	:homepage: https://github.com/socektubs/Pyping/
-	:copyleft: 1989-2011 by the python-ping team, see AUTHORS for more details.
-	:license: GNU GPL v2, see LICENSE for more details.
-"""
-
-debug = False
+def usage():
+	with indent(1, quote=' '):
+		puts('Usage: pyping [destination] [options]')
+		print
+		puts('Options')
+		with indent(2, quote=' '):
+			puts('--timeout, -t     Set timeout in ms (Default: 1000)')
+			puts('--size, -s        Set package size in data bytes (Default: 55)')
+			puts('--count, -c       Set ping count (Default: 3)')
+			puts('--udp             Send ping via Udp (no-root needed)')
+		print
+		puts('Examples')
+		with indent(2, quote=' '):
+			puts('pyping 127.0.0.1')
+		print
+	sys.exit(0)
 
 if __name__ == '__main__':
-	parser = argparse.ArgumentParser(description='Short sample app')
-	parser.add_argument('--counter', '-c', action="store", help="Number of ping to send")
+	try:
+		opts, args = getopt.getopt(sys.argv[1:], 'c:t:s:h', [	'count=',
+																'timeout=', 
+																'size=', 
+																'help'])
+	except getopt.GetoptError as err:
+		usage()
 
-	print parser.parse_args()
+	print(opts)
+	print(args)
 
 	#pyping.ping(destination, timeout=timeout, packet_size=packet_size, count=count, quiet_output=False)
