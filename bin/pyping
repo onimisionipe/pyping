@@ -18,10 +18,6 @@ def usage():
 			puts('--count, -c       Set ping count (Default: 3)')
 			puts('--udp             Send ping via Udp (no-root needed)')
 		print
-		puts('Examples')
-		with indent(2, quote=' '):
-			puts('pyping 127.0.0.1')
-		print
 	sys.exit(0)
 
 if __name__ == '__main__':

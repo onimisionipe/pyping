@@ -1,6 +1,16 @@
 History
 -------
 
+2012-06-05
+++++++++++
+
+- Cleanup projet (by `Socketubs <http://http://www.socketubs.net/>`_):
+  - Add Cli parser
+  - Can be used as python library
+  - Added to pypi
+  - Some Fixes
+  - Clean
+
 2011-10-17
 ++++++++++
 

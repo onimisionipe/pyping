@@ -27,6 +27,8 @@ Use as a cli tool::
     3 packets transmitted, 3 packets received, 0.0% packet loss
     round-trip (ms)  min/avg/max = 64.457/66.244/67.677
 
+    socketubs@socket-laptop [Pyping]: pyping --help
+
 Use as a Python lib::
 
     >>> import pyping
@@ -50,7 +52,6 @@ Todo
 
 - Docs
 - Refactor core.py
-- Create a CLI interface
 - Tests
 
 Contribute

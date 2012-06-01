@@ -15,7 +15,7 @@ if sys.argv[-1] == 'publish':
 
 setup(
 	name='pyping',
-	version='0.0.3',
+	version='0.0.4',
 	description='A pure python ICMP ping implementation using raw sockets',
 	long_description=open('README.rst').read() + '\n\n' +
                      open('HISTORY.rst').read(),
