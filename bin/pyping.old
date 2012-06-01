@@ -1,0 +1,99 @@
+#!/usr/bin/env python
+# coding: utf-8
+import pyping
+import sys
+from clint.textui import colored, indent, puts
+from clint import args
+
+"""
+	A pure python ping implementation using raw sockets.
+
+	Note that ICMP messages can only be send from processes running as root
+	(in Windows, you must run this script as 'Administrator').
+
+	Bugs are naturally mine. I'd be glad to hear about them. There are
+	certainly word - size dependencies here.
+
+	:homepage: https://github.com/socektubs/Pyping/
+	:copyleft: 1989-2011 by the python-ping team, see AUTHORS for more details.
+	:license: GNU GPL v2, see LICENSE for more details.
+"""
+
+debug = False
+
+def usage():
+	with indent(1, quote=' '):
+		puts('Usage: pyping [destination] [options]')
+		print
+		puts('Options')
+		with indent(2, quote=' '):
+			puts('--timeout, -t     Set timeout in ms (Default: 1000)')
+			puts('--size, -s        Set package size in data bytes (Default: 55)')
+			puts('--count, -c       Set ping count (Default: 3)')
+			puts('--udp             Send ping via Udp (no-root needed)')
+		print
+		puts('Examples')
+		with indent(2, quote=' '):
+			puts('pyping 127.0.0.1')
+		print
+	sys.exit(0)
+
+if __name__ == '__main__':
+	if not len(sys.argv) >= 2:
+		usage()
+
+	if debug:
+		with indent(4, quote='>>>'):
+			puts(colored.white('---------- DEBUG ----------'))
+			puts(colored.red('Aruments passed in: ') + str(args.all))
+			puts(colored.red('Flags detected: ') + str(args.flags))
+			puts(colored.red('Files detected: ') + str(args.files))
+			puts(colored.red('NOT Files detected: ') + str(args.not_files))
+			puts(colored.red('Grouped Arguments: ') + str(dict(args.grouped)))
+			puts(colored.white('---------- DEBUG ----------'))
+		print
+
+
+	udp = False
+	count = 3
+	timeout = 1000
+	packet_size = 55
+
+	# Check doubles
+	if '--timeout' in args.flags and '-t' in args.flags:
+		print('Conflict between --timeout and -t')
+		usage()
+	if '--count' in args.flags and '-c' in args.flags: 
+		print('Conflict between --count and -c')
+		usage()
+
+	# Parse
+	# Udp
+	if '--udp' in args.flags:
+		udp = True
+	# Timeout
+	if '--timeout' in args.flags:
+		if dict(args.grouped)['--timeout']: timeout = dict(args.grouped)['--timeout'][0]
+	if '-t' in args.flags:
+		if dict(args.grouped)['-t']: timeout = dict(args.grouped)['-t'][0]
+
+	# Count
+	if '--count' in args.flags:
+		if dict(args.grouped)['--count']: count = int(dict(args.grouped)['--count'][0])
+	if '-c' in args.flags:
+		if dict(args.grouped)['-c']: count = int(dict(args.grouped)['-c'][0])
+
+	# Packet size
+	if '--size' in args.flags:
+		if dict(args.grouped)['--size']: packet_size = int(dict(args.grouped)['--size'][0])
+	if '-s' in args.flags:
+		if dict(args.grouped)['-s']: packet_size = int(dict(args.grouped)['-s'][0])
+
+	destination = args.all[0]
+
+	if debug:
+		print('Count: %s' % count)
+		print('Size: %s' % packet_size)
+		print('Timeout: %s' % timeout)
+
+	pyping.ping(destination, timeout=timeout, packet_size=packet_size, count=count, quiet_output=False)

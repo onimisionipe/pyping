@@ -25,5 +25,5 @@ setup(
 	url='https://github.com/socketubs/Pyping/',
 	keywords="ping icmp network latency",
 	packages = ['pyping'],
-	scripts=["scripts/pyping"]
+	scripts=["bin/pyping"]
 )
