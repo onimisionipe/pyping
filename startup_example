@@ -9,7 +9,7 @@
 
 case "$1" in
   start)
-        screen -dmS pinger bash -c "cd ~/pyping; ./pinger.py example.com > /var/log/example.com.ping.log"
+        screen -dmS pinger bash -c "cd ~/pyping; ./pinger.py example.com 2>>/var/log/example.com.ping.log"
   ;;
 
   restart|reload|force-reload)
