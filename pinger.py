@@ -55,7 +55,7 @@ while True:
 		if len(v) >= k: dns_errors[k] = v[1:]
 
 	try:
-		r = ping(host, count=1, timeout=3000, udp=True)
+		r = ping(host, count=1, timeout=3000, udp=False)
 	except Exception, e:
 		#print ">%s<" % e
 		if str(e) == "unknown_host":
@@ -65,7 +65,6 @@ while True:
 			for k  in history.keys():
 				dns_errors[k].append(0)
 			continue
-
 	
 	if r.packet_lost > 0:
 		if losting == 0:
