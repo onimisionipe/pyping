@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import logging, sys
 
 FORMAT = "[%(asctime)s: %(levelname)s/%(processName)s] %(message)s"
