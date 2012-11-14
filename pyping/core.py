@@ -166,7 +166,8 @@ class Ping(object):
 		else:
 			print(msg)
 
-		sys.exit(-1)
+		raise Exception, "unknown_host"
+		#sys.exit(-1)
 
 	def print_success(self, delay, ip, packet_size, ip_header, icmp_header):
 		if ip == self.destination:
@@ -381,7 +382,6 @@ class Ping(object):
 			if inputready == []: # timeout
 				return None, 0, 0, 0, 0
 
-			receive_time = default_timer()
 
 			packet_data, address = current_socket.recvfrom(ICMP_MAX_RECV)
 
@@ -393,6 +393,8 @@ class Ping(object):
 				struct_format="!BBHHH",
 				data=packet_data[20:28]
 			)
+
+			receive_time = default_timer()
 
 			if icmp_header["packet_id"] == self.own_id: # Our packet
 				ip_header = self.header2dict(
