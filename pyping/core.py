@@ -90,7 +90,7 @@ def is_valid_ip4_address(addr):
 			number = int(part)
 		except ValueError:
 			return False
-		if number > 255:
+		if number > 255 or number < 0:
 			return False
 	return True
 
