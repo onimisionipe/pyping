@@ -114,7 +114,7 @@ class Response(object):
 		self.destination_ip = None
 
 class Ping(object):
-	def __init__(self, destination, timeout=1000, packet_size=55, own_id=None, quiet_output=True, udp=False):
+	def __init__(self, destination, timeout=1000, packet_size=55, own_id=None, quiet_output=True, udp=False, bind=None):
 		self.quiet_output = quiet_output
 		if quiet_output:
 			self.response = Response()
@@ -126,6 +126,7 @@ class Ping(object):
 		self.timeout = timeout
 		self.packet_size = packet_size
 		self.udp = udp
+		self.bind = bind
 
 		if own_id is None:
 			self.own_id = os.getpid() & 0xFFFF
@@ -297,6 +298,11 @@ class Ping(object):
 				current_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.getprotobyname("icmp"))
 			else:
 				current_socket = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.getprotobyname("icmp"))
+
+			# Bind the socket to a source address
+			if self.bind:
+				current_socket.bind((self.bind, 0)) # Port number is irrelevant for ICMP
+
 		except socket.error, (errno, msg):
 			if errno == 1:
 				# Operation not permitted - Add more information to traceback
