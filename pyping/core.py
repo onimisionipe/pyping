@@ -8,7 +8,7 @@
 
 	Bugs are naturally mine. I'd be glad to hear about them. There are
 	certainly word - size dependencies here.
-	
+
 	:homepage: https://github.com/socketubs/Pyping/
 	:copyleft: 1989-2011 by the python-ping team, see AUTHORS for more details.
 	:license: GNU GPL v2, see LICENSE for more details.
@@ -18,6 +18,7 @@
 import os
 import select
 import signal
+import six
 import socket
 import struct
 import sys
@@ -61,14 +62,19 @@ def calculate_checksum(source_string):
 		else:
 			loByte = source_string[count + 1]
 			hiByte = source_string[count]
-		sum = sum + (ord(hiByte) * 256 + ord(loByte))
+		if not six.PY3:
+			loByte = ord(loByte)
+			hiByte = ord(hiByte)
+		sum = sum + (hiByte * 256 + loByte)
 		count += 2
 
 	# Handle last byte if applicable (odd-number of bytes)
 	# Endianness should be irrelevant in this case
 	if countTo < len(source_string): # Check for odd length
 		loByte = source_string[len(source_string) - 1]
-		sum += ord(loByte)
+		if not six.PY3:
+			loByte = ord(loByte)
+		sum += loByte
 
 	sum &= 0xffffffff # Truncate sum to 32 bits (a variance from ping.c, which
 					  # uses signed ints, but overflow is unlikely in ping)
@@ -167,7 +173,7 @@ class Ping(object):
 		else:
 			print(msg)
 
-		raise Exception, "unknown_host"
+		raise Exception("unknown_host")
 		#sys.exit(-1)
 
 	def print_success(self, delay, ip, packet_size, ip_header, icmp_header):
@@ -176,7 +182,7 @@ class Ping(object):
 		else:
 			from_info = "%s (%s)" % (self.destination, ip)
 
-	   	msg = "%d bytes from %s: icmp_seq=%d ttl=%d time=%.1f ms" % (packet_size, from_info, icmp_header["seq_number"], ip_header["ttl"], delay)
+			msg = "%d bytes from %s: icmp_seq=%d ttl=%d time=%.1f ms" % (packet_size, from_info, icmp_header["seq_number"], ip_header["ttl"], delay)
 
 		if self.quiet_output:
 			self.response.output.append(msg)
@@ -208,7 +214,7 @@ class Ping(object):
 		lost_rate = float(lost_count) / self.send_count * 100.0
 
 		msg = "%d packets transmitted, %d packets received, %0.1f%% packet loss" % (self.send_count, self.receive_count, lost_rate)
-	
+
 		if self.quiet_output:
 			self.response.output.append(msg)
 			self.response.packet_lost = lost_count
@@ -250,7 +256,7 @@ class Ping(object):
 	def setup_signal_handler(self):
 		signal.signal(signal.SIGINT, self.signal_handler)   # Handle Ctrl-C
 		if hasattr(signal, "SIGBREAK"):
-			# Handle Ctrl-Break e.g. under Windows 
+			# Handle Ctrl-Break e.g. under Windows
 			signal.signal(signal.SIGBREAK, self.signal_handler)
 
 	#--------------------------------------------------------------------------
@@ -303,14 +309,14 @@ class Ping(object):
 			if self.bind:
 				current_socket.bind((self.bind, 0)) # Port number is irrelevant for ICMP
 
-		except socket.error, (errno, msg):
-			if errno == 1:
+		except socket.error as exc:
+			if exc.errno == 1:
 				# Operation not permitted - Add more information to traceback
 				etype, evalue, etb = sys.exc_info()
 				evalue = etype(
 					"%s - Note that ICMP messages can only be send from processes running as root." % evalue
 				)
-				raise etype, evalue, etb
+				six.reraise(etype, evalue, etb)
 			raise # raise the original error
 
 		send_time = self.send_one_ping(current_socket)
