@@ -1,0 +1,43 @@
+[Default]
+files = **.(py|md|rst|yml), .coafile
+ignore = (.tox|env|.env|venv)/**
+
+indent_size = 4
+use_spaces = True
+max_line_length = 120
+max_lines_per_file = 1000
+file_naming_convention = snake
+
+
+[filenames]
+enabled = False
+bears = FilenameBear
+
+[long-files]
+bears = LineCountBear
+ignore =
+  (.tox|env|.env|venv)/**
+
+[python-adv-spacing]
+files = **.py
+bears = YapfBear
+space_between_ending_comma_and_closing_bracket = yes
+dedent_closing_brackets = yes
+blank_line_before_nested_class_or_def = yes
+join_multiple_lines = no
+
+[yaml-spacing]
+files = **.yml
+bears = SpaceConsistencyBear
+indent_size = 2
+enforce_newline_at_EOF = False
+
+[misc-spacing]
+ignore = (.tox|env|.env|venv)/**, **.(py|yml)
+bears = SpaceConsistencyBear
+enforce_newline_at_EOF = False
+
+[commit]
+bears = GitCommitBear
+shortlog_length = 72
+

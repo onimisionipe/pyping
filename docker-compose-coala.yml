@@ -1,0 +1,20 @@
+version: '2'
+services:
+  coala-fix:
+    image: coala/base:0.9
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: coala -a
+
+  flask-check:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.py2
+    volumes:
+      - .:/app
+    environment:
+      PYTHONPATH: /app
+    command: flake8
+
+  #docker run -v=$(pwd):/app --workdir=/app  coala/base:0.8 coala -a

@@ -8,7 +8,7 @@ Note that ICMP messages can only be sent from processes running as root
 (in Windows, you must run this script as 'Administrator').
 
 Original Version from Matthew Dixon Cowles.
-  
+
 * Copyleft 1989-2011 by the python-ping team, see `AUTHORS <https://raw.github.com/socketubs/pyping/master/AUTHORS>`_ for more details.
 * License: GNU GPL v2, see `LICENCE <https://raw.github.com/Socketubs/Pyping/master/LICENSE>`_ for more details.
 
@@ -47,12 +47,20 @@ Use as a Python lib::
     >>> r.destination_ip
     '92.243.5.143'
 
+Testing
+-------
+Run command::
+
+    docker-compose -f docker-compose-unit-tests.yml run --rm python2
+    docker-compose -f docker-compose-unit-tests.yml run --rm python3
+
+
 Todo
 ----
 
 - Docs
 - Refactor core.py
-- Tests
+- More tests
 
 Contribute
 ----------

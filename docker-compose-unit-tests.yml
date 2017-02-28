@@ -1,0 +1,21 @@
+version: '2'
+services:
+  python2:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.py2
+    volumes:
+      - .:/app
+    environment:
+      PYTHONPATH: /app
+    command: pytest --cov pyping tests tests/tests.py
+
+  python3:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.py3
+    volumes:
+      - .:/app
+    environment:
+      PYTHONPATH: /app
+    command: pytest --cov pyping tests tests/tests.py

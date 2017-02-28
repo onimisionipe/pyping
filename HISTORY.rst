@@ -29,7 +29,7 @@ History
 2011-09-06
 ++++++++++
 
-- `Cleanup <http://www.falatic.com/index.php/39/pinging-with-python>`_ by Martin Falatic : 
+- `Cleanup <http://www.falatic.com/index.php/39/pinging-with-python>`_ by Martin Falatic :
   - Restored lost comments and docs. Improved functionality: constant time between pings, internal times consistently use milliseconds. Clarified annotations (e.g., in the checksum routine)
   - Using unsigned data in IP & ICMP header pack/unpack unless otherwise necessary.
   - Signal handling
@@ -49,7 +49,7 @@ History
 2009-11-08
 ++++++++++
 
-- Fixes by `George Notaras <http://www.g-loaded.eu/2009/10/30/python-ping/>`_, reported by `Chris Hallman <http://cdhallman.blogspot.com>`_: 
+- Fixes by `George Notaras <http://www.g-loaded.eu/2009/10/30/python-ping/>`_, reported by `Chris Hallman <http://cdhallman.blogspot.com>`_:
   - Improved compatibility with GNU/Linux systems.
   - Re-use time.time() instead of time.clock(). The 2007 implementation worked only under Microsoft Windows. Failed on GNU/Linux. time.clock() behaves differently under the two `OSes <http://docs.python.org/library/time.html#time.clock>`_.
 
